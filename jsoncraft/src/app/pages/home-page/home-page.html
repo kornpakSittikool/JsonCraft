@@ -1,0 +1,65 @@
+<div>
+    <main class="min-h-screen bg-[#f7f4ee] px-6 py-10 text-slate-900 font-['Space_Grotesk'] md:px-10">
+        <section class="mx-auto flex w-full max-w-6xl justify-center">
+            <div class="w-full">
+                <div class="rounded-3xl border border-black/10 bg-white p-6 shadow-[0_16px_40px_rgba(14,16,22,0.08)]">
+                    <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+                        <div>
+                            <p class="text-[11px] uppercase tracking-[0.18em] text-slate-500">Inputs</p>
+                            <h2 class="text-2xl font-semibold">Two JSON sources</h2>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <button
+                                class="rounded-full border border-black/10 bg-[#f0ece6] px-4 py-2 text-xs font-semibold text-slate-700 transition hover:-translate-y-0.5 hover:bg-slate-900 hover:text-white"
+                                (click)="clearBoth()">
+                                Clear
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="mt-5 grid gap-4 lg:grid-cols-2">
+                        <div class="rounded-2xl border border-black/10 bg-[#f0ece6] p-4">
+                            <div class="flex items-center gap-2">
+                                <span class="h-2.5 w-2.5 rounded-full bg-blue-600"></span>
+                                <span class="font-semibold text-slate-800">Left JSON</span>
+                                <span class="text-xs font-semibold text-rose-500">
+                                    {{ leftStatus === 'Invalid' ? 'Invalid JSON' : '' }}
+                                </span>
+                            </div>
+                            <textarea
+                                class="mt-3 min-h-[220px] w-full resize-none rounded-xl border border-black/10 bg-white px-3 py-3 font-['JetBrains_Mono'] text-sm leading-relaxed text-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
+                                spellcheck="false" placeholder="Paste first JSON payload here..."
+                                (input)="onLeftJsonInput($event)" #leftArea></textarea>
+                            <div class="mt-3 flex justify-end text-xs text-slate-500">
+                                <span class="text-xs" [class.text-rose-500]="leftStatus === 'Invalid'"
+                                    [class.text-emerald-600]="leftStatus === 'Valid'"
+                                    [class.font-semibold]="leftStatus === 'Invalid' || leftStatus === 'Valid'"
+                                    [class.text-slate-500]="leftStatus === 'Empty'">
+                                    Status: {{ leftStatus === 'Empty' ? 'None' : leftStatus }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="rounded-2xl border border-black/10 bg-[#f0ece6] p-4">
+                            <div class="flex items-center gap-2 font-semibold text-slate-800">
+                                <span class="h-2.5 w-2.5 rounded-full bg-rose-500"></span>
+                                <span>Right JSON</span>
+                            </div>
+                            <textarea
+                                class="mt-3 min-h-[220px] w-full resize-none rounded-xl border border-black/10 bg-white px-3 py-3 font-['JetBrains_Mono'] text-sm leading-relaxed text-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
+                                spellcheck="false" placeholder="Formatted JSON will appear here..."
+                                [value]="rightJsonText" readonly #rightArea></textarea>
+                            <div class="mt-3 flex justify-between text-xs text-slate-500">
+                                <span>Lines: {{ rightLines }}</span>
+                                <span class="text-xs" [class.text-emerald-600]="rightStatus === 'Valid'"
+                                    [class.font-semibold]="rightStatus === 'Valid'"
+                                    [class.text-slate-500]="rightStatus === 'Empty'">
+                                    Status: {{ rightStatus === 'Empty' ? 'None' : rightStatus }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
