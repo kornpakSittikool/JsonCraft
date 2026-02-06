@@ -83,4 +83,50 @@ describe('HomePage', () => {
     expect(component.rightStatus).toBe('Empty');
     expect(leftTextarea.value).toBe('');
   });
+
+  it('changeToJson formats left JSON into the right side', async () => {
+    const textareas = fixture.nativeElement.querySelectorAll('textarea') as NodeListOf<HTMLTextAreaElement>;
+    const leftTextarea = textareas[0];
+    const raw = '{"user":{"id":1,"active":true}}';
+    const formatted = JSON.stringify(JSON.parse(raw), null, 2);
+
+    leftTextarea.value = raw;
+    component.leftJsonText = raw;
+
+    component.changeToJson();
+    await flushTimers();
+
+    expect(component.leftStatus).toBe('Valid');
+    expect(component.rightStatus).toBe('Valid');
+    expect(component.rightJsonText).toBe(formatted);
+    expect(component.rightLines).toBe(formatted.split(/\r\n|\r|\n/).length);
+  });
+
+  it('changeToTypescript generates a type definition from left JSON', async () => {
+    const textareas = fixture.nativeElement.querySelectorAll('textarea') as NodeListOf<HTMLTextAreaElement>;
+    const leftTextarea = textareas[0];
+    const raw = '{"name":"Ada","age":30,"tags":["x","y"],"meta":{"active":true}}';
+
+    leftTextarea.value = raw;
+    component.leftJsonText = raw;
+
+    component.changeToTypescript();
+    await flushTimers();
+
+    const expected = [
+      'type Root = {',
+      '  name: string;',
+      '  age: number;',
+      '  tags: string[];',
+      '  meta: {',
+      '    active: boolean;',
+      '  };',
+      '};'
+    ].join('\n');
+
+    expect(component.leftStatus).toBe('Valid');
+    expect(component.rightStatus).toBe('Valid');
+    expect(component.rightJsonText).toBe(expected);
+    expect(component.rightLines).toBe(expected.split(/\r\n|\r|\n/).length);
+  });
 });
