@@ -31,7 +31,22 @@ Then open `http://localhost:4200/`.
 - `npm run build`: build the production bundle
 - `npm test -- --watch=false`: run unit tests once
 
+## Docker (backup run)
+
+Build and run with Docker Compose:
+
+```bash
+docker compose up -d --build
+```
+
+Then open `http://localhost:4000/`.
+
+Stop:
+
+```bash
+docker compose down
+```
+
 ## Notes (Windows)
 
 If PowerShell blocks `npm`, use `npm.cmd` instead:
-
