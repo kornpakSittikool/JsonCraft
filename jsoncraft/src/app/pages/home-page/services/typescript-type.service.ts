@@ -35,13 +35,20 @@ export class TypescriptTypeService {
         const pad = '  '.repeat(indent + 1);
         const closePad = '  '.repeat(indent);
         const props = entries
-          .map(([key, val]) => `${pad}${this.formatKey(key)}: ${this.inferType(val, indent + 1)};`)
+          .map(([key, val]) => {
+            const optional = this.isOptionalValue(val) ? '?' : '';
+            return `${pad}${this.formatKey(key)}${optional}: ${this.inferType(val, indent + 1)};`;
+          })
           .join('\n');
         return `{\n${props}\n${closePad}}`;
       }
       default:
         return 'unknown';
     }
+  }
+
+  private isOptionalValue(value: unknown): boolean {
+    return value === '';
   }
 
   private formatKey(key: string): string {

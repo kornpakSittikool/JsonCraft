@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HomePage } from './home-page';
 import { TypescriptTypeService } from './services/typescript-type.service';
 import { JsonFormatService } from './services/json-format.service';
+import { ZodSchemaService } from './services/zod-schema.service';
 
 
 describe('HomePage', () => {
@@ -14,7 +15,7 @@ describe('HomePage', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HomePage],
-      providers: [JsonFormatService, TypescriptTypeService]
+      providers: [JsonFormatService, TypescriptTypeService, ZodSchemaService]
     })
     .compileComponents();
 
@@ -126,6 +127,34 @@ describe('HomePage', () => {
       '    active: boolean;',
       '  };',
       '};'
+    ].join('\n');
+
+    expect(component.leftStatus).toBe('Valid');
+    expect(component.rightStatus).toBe('Valid');
+    expect(component.rightJsonText).toBe(expected);
+    expect(component.rightLines).toBe(expected.split(/\r\n|\r|\n/).length);
+  });
+
+  it('changeToZodSchema generates a Zod schema from left JSON', async () => {
+    const textareas = fixture.nativeElement.querySelectorAll('textarea') as NodeListOf<HTMLTextAreaElement>;
+    const leftTextarea = textareas[0];
+    const raw = '{"name":"Ada","age":30,"tags":["x","y"],"meta":{"active":true}}';
+
+    leftTextarea.value = raw;
+    component.leftJsonText = raw;
+
+    component.changeToZodSchema();
+    await flushTimers();
+
+    const expected = [
+      'const RootSchema = z.object({',
+      '  name: z.string(),',
+      '  age: z.number(),',
+      '  tags: z.array(z.string()),',
+      '  meta: z.object({',
+      '    active: z.boolean(),',
+      '  }),',
+      '});'
     ].join('\n');
 
     expect(component.leftStatus).toBe('Valid');

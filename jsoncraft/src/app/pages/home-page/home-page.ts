@@ -1,6 +1,7 @@
 ﻿import { Component, ElementRef, ViewChild } from '@angular/core';
 import { JsonFormatService } from './services/json-format.service';
 import { TypescriptTypeService } from './services/typescript-type.service';
+import { ZodSchemaService } from './services/zod-schema.service';
 
 @Component({
   selector: 'app-home-page',
@@ -20,7 +21,8 @@ export class HomePage {
 
   constructor(
     private readonly jsonFormatService: JsonFormatService,
-    private readonly typescriptTypeService: TypescriptTypeService
+    private readonly typescriptTypeService: TypescriptTypeService,
+    private readonly zodSchemaService: ZodSchemaService
   ) {}
 
   onLeftJsonInput(event: Event): void {
@@ -100,6 +102,30 @@ export class HomePage {
     try {
       const parsed = JSON.parse(value);
       const output = this.typescriptTypeService.toTypescript(parsed);
+
+      this.leftStatus = 'Valid';
+      this.rightJsonText = output;
+      this.rightLines = output ? output.split(/\r\n|\r|\n/).length : 0;
+      this.rightStatus = output ? 'Valid' : 'Empty';
+      this.scheduleRightResize();
+    } catch {
+      this.leftStatus = 'Invalid';
+      this.resetRight();
+    }
+  }
+
+  changeToZodSchema(): void {
+    const value = this.leftArea?.nativeElement?.value ?? this.leftJsonText;
+
+    if (!value.trim()) {
+      this.leftStatus = 'Empty';
+      this.resetRight();
+      return;
+    }
+
+    try {
+      const parsed = JSON.parse(value);
+      const output = this.zodSchemaService.toZodSchema(parsed);
 
       this.leftStatus = 'Valid';
       this.rightJsonText = output;
