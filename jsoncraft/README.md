@@ -41,6 +41,11 @@ docker compose up -d --build
 
 Then open `http://localhost:4000/`.
 
+Notes:
+
+- The production build inlines Google Fonts, so the first build needs internet access.
+- To change the host port, edit the `ports` mapping in `docker-compose.yml`.
+
 Stop:
 
 ```bash
