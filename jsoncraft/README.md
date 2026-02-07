@@ -20,14 +20,14 @@ npm install
 Start the dev server:
 
 ```bash
-npm start
+npm run start
 ```
 
 Then open `http://localhost:4200/`.
 
 ## Scripts
 
-- `npm start`: run the development server
+- `npm run start`: run the development server
 - `npm run build`: build the production bundle
 - `npm test -- --watch=false`: run unit tests once
 
