@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HomePage } from './home-page';
+import { TypescriptTypeService } from './services/typescript-type.service';
+import { JsonFormatService } from './services/json-format.service';
+
 
 describe('HomePage', () => {
   let component: HomePage;
@@ -10,7 +13,8 @@ describe('HomePage', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HomePage]
+      imports: [HomePage],
+      providers: [JsonFormatService, TypescriptTypeService]
     })
     .compileComponents();
 
