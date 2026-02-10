@@ -38,7 +38,6 @@ Jsoncraft is a lightweight web app for working with JSON quickly. You can format
    ```
 
 3. Open in browser:
-
    - `http://localhost:4200/`
 
 ## How to use
@@ -82,17 +81,6 @@ docker compose down
 
 - First production build needs internet access because Google Fonts are inlined.
 - To change host port, edit `ports` in `docker-compose.yml`.
-
-## Troubleshooting
-
-### PowerShell blocks `npm`
-
-Use `npm.cmd` instead:
-
-```powershell
-npm.cmd install
-npm.cmd run start
-```
 
 ### Invalid JSON status
 
